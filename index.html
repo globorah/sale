@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moving Sale - 짐 정리 물품 판매</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .badge-available { background-color: #DEF7EC; color: #03543F; }
+        .badge-reserved { background-color: #FEF08A; color: #713F12; }
+        .badge-sold { background-color: #FBD5D5; color: #9B1C1C; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased pb-24 sm:pb-8">
+
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-xs">
+        <div class="max-w-6xl mx-auto px-4 py-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">📦 무빙 세일 (Moving Sale)</h1>
+                <p class="text-sm text-gray-500 mt-1">귀국으로 인해 사용하던 물품들을 저렴하게 정리합니다. (가구는 픽업만 가능)</p>
+            </div>
+            <div id="filter-buttons" class="flex gap-2 overflow-x-auto pb-2 sm:pb-0 w-full sm:w-auto">
+                <button onclick="filterCategory('All')" class="px-4 py-2 rounded-full text-sm font-medium bg-blue-600 text-white shadow-xs cursor-pointer">전체</button>
+                <button onclick="filterCategory('Furniture')" class="px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 cursor-pointer">가구</button>
+                <button onclick="filterCategory('Electronics')" class="px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 cursor-pointer">가전</button>
+                <button onclick="filterCategory('Home')" class="px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 cursor-pointer">생활용품</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        </div>
+    </main>
+
+    <!-- 📱 하단 고정 연락처 바 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-xl z-50 sm:relative sm:shadow-none sm:border-t sm:mt-12 sm:bg-transparent">
+        <div class="max-w-md mx-auto flex gap-3 sm:justify-center sm:max-w-none">
+            
+            <a href="sms:203-507-5172" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-md transition-colors text-sm₩">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                문자 문의하기
+            </a>
+            
+            <button onclick="copyKakaoId('hongbaoluo')" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 bg-amber-400 hover:bg-amber-500 text-amber-950 font-semibold rounded-xl shadow-md transition-colors text-sm cursor-pointer">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.185-9 7.115 0 2.553 1.706 4.8 4.27 6.054-.189.67-.683 2.427-.781 2.77-.123.424.14.417.294.316.121-.08 1.93-1.314 2.696-1.84a10.4 10.4 0 002.521.31c4.97 0 9-3.185 9-7.115C21 6.185 16.97 3 12 3z"/></svg>
+                카톡 ID 복사
+            </button>
+            
+        </div>
+        <p class="text-center text-xs text-gray-400 mt-2 hidden sm:block">클릭 시 문자 연결 또는 아이디가 복사됩니다.</p>
+    </div>
+
+    <script>
+        const products = [
+            { id: 1, category: "Furniture", name: "IKEA MICKE 책상 (Small)", price: 20, condition: "Fair", original: "99.99", store: "IKEA", url: "https://www.ikea.com/us/en/p/micke-desk-white-80213074/", photo: "desk1.png", desc: "상판에 약간의 까임이 있습니다. 사이즈 105*50*75cm", status: "Available" },
+            { id: 2, category: "Furniture", name: "IKEA MICKE 책상 (Small)", price: 30, condition: "Good", original: "99.99", store: "IKEA", url: "https://www.ikea.com/us/en/p/micke-desk-white-80213074/", photo: "desk1.png", desc: "사이즈 105*50*75cm", status: "Available" },
+            { id: 3, category: "Furniture", name: "IKEA MICKE 책상 (Large)", price: 40, condition: "Good", original: "99.99", store: "IKEA", url: "https://www.ikea.com/us/en/p/micke-desk-black-brown-90214308/", photo: "desk2.png", desc: "사이즈 142*50*75cm", status: "Available" },
+            { id: 4, category: "Furniture", name: "IKEA MICKE 책상 (Large)", price: 40, condition: "Good", original: "99.99", store: "IKEA", url: "https://www.ikea.com/us/en/p/micke-desk-black-brown-90214308/", photo: "desk2.png", desc: "사이즈 142*50*75cm", status: "Available" },
+            { id: 5, category: "Furniture", name: "사무 의자 (Pink)", price: 10, condition: "Good", original: "49.98", store: "Amazon", url: "https://a.co/d/0ecBUte0", photo: "chair_pink.png", desc: "등받이 및 쿠션 모두 핑크입니다.", status: "Available" },
+            { id: 6, category: "Furniture", name: "사무 의자 (Grey)", price: 10, condition: "Good", original: "49.98", store: "Amazon", url: "https://a.co/d/03hiXGMU", photo: "chair_grey.png", desc: "등받이 및 쿠션 모두 그레이입니다.", status: "Available" },
+            { id: 7, category: "Furniture", name: "사무 의자 (Black)", price: 10, condition: "Good", original: "35.98", store: "Amazon", url: "https://a.co/d/09RZQ9P9", photo: "chair_black.png", desc: "등받이 및 쿠션 모두 블랙입니다", status: "Available" },
+            { id: 8, category: "Furniture", name: "사무 의자 (Beige)", price: 10, condition: "Good", original: "49.98", store: "Amazon", url: "https://a.co/d/09mtVpuf", photo: "chair_beige.png", desc: "등받이는 그레이이고, 쿠션은 베이지입니다.", status: "Available" },
+            { id: 9, category: "Home", name: "따수미 텐트 (Grey)", price: 20, condition: "Good", original: "64,900원", store: "Naver", url: "https://brand.naver.com/idoogen/products/12736364620", photo: "tent.png", desc: "그레이, 슈퍼싱글 사이즈입니다.", status: "Available" },
+            { id: 10, category: "Home", name: "빨래 건조대", price: 20, condition: "Excellent", original: "49.99", store: "Amazon", url: "https://www.amazon.com/dp/B09QL1RKTS?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1", photo: "drying.png", desc: "빨래가 꽤 많이 걸리는 빨래 건조대입니다.", status: "Available" },
+            { id: 11, category: "Electronics", name: "HP Color LaserJet M182nw", price: 80, condition: "Good", original: "599.15", store: "Amazon", url: "https://a.co/d/03dDvdE3", photo: "printer.png", desc: "블랙 토너가 없고, 다른 색 토너들도 적습니다. 블랙토너를 넣어야 작동합니다.", status: "Available" },
+            { id: 12, category: "Electronics", name: "로봇청소기", price: 20, condition: "Good", original: "79.99", store: "Amazon", url: "https://a.co/d/02Q2Ce02", photo: "robot.png", desc: "ILIFE 로봇청소기", status: "Available" },
+            { id: 13, category: "Electronics", name: "전기 담요", price: 15, condition: "Good", original: "39.99", store: "Amazon", url: "https://a.co/d/0hOMXvBQ", photo: "blanket.png", desc: "Bedsure 전기담요로 1인 사이즈(50x60인치)입니다.", status: "Available" },
+            { id: 14, category: "Electronics", name: "전기 장판 (King)", price: 40, condition: "Fair", original: "92.26", store: "Amazon", url: "https://a.co/d/03dqEQ7q", photo: "heated.png", desc: "화이트, 폴리에스터 탑의 킹사이즈 전기장판입니다.", status: "Available" },
+            { id: 15, category: "Electronics", name: "가습기", price: 10, condition: "Good", original: "25.99", store: "Amazon", url: "https://a.co/d/0bDrjABo", photo: "humidifier.png", desc: "아로마 에센셜 오일(라벤더) 포함하여 드립니다.", status: "Available" }
+        ];
+
+        const statusConfig = {
+            'Available': { text: '판매중', class: 'badge-available' },
+            'Reserved': { text: '예약중', class: 'badge-reserved' },
+            'Sold': { text: '판매완료', class: 'badge-sold' }
+        };
+
+        function displayProducts(items) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+
+            if(items.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-center text-gray-500 py-12">해당 품목이 없습니다.</p>`;
+                return;
+            }
+
+            items.forEach(item => {
+                const status = statusConfig[item.status] || { text: item.status, class: 'bg-gray-100 text-gray-800' };
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-xl shadow-xs border border-gray-100 overflow-hidden flex flex-col";
+                
+                if(item.status === 'Sold') card.classList.add('opacity-60');
+
+                const storeLinkHTML = item.url 
+                    ? `<a href="${item.url}" target="_blank" class="text-blue-600 hover:underline font-medium inline-flex items-center gap-0.5">
+                        ${item.store} <span class="text-[10px]">🔗</span>
+                       </a>` 
+                    : item.store;
+
+                card.innerHTML = `
+                    <div class="relative bg-gray-100 h-48 flex items-center justify-center overflow-hidden">
+                        <img src="${item.photo}" alt="${item.name}" onerror="this.onerror=null; this.src='https://placehold.co/300x200?text=No+Image';" class="object-cover w-full h-full">
+                        <span class="absolute top-3 right-3 px-2.5 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            ${status.text}
+                        </span>
+                    </div>
+                    <div class="p-4 flex-1 flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs font-bold text-blue-600 uppercase tracking-wide">${translateCategory(item.category)}</span>
+                            <h3 class="text-base font-bold text-gray-900 mt-1 line-clamp-2">${item.name}</h3>
+                            <p class="text-xs text-gray-400 mt-1">상태: <span class="font-medium text-gray-600">${item.condition}</span> | 구매처: ${storeLinkHTML}</p>
+                            <p class="text-sm text-gray-500 mt-2 line-clamp-2 min-h-[2.5rem]">${item.desc || '설명 없음'}</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-gray-100 flex items-baseline justify-between">
+                            <div>
+                                <span class="text-xl font-extrabold text-gray-900">$${item.price}</span>
+                                <span class="text-xs text-gray-400 line-through ml-1.5">Reg. $${item.original}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function translateCategory(cat) {
+            if(cat === 'Furniture') return '가구';
+            if(cat === 'Electronics') return '가전';
+            if(cat === 'Home') return '생활용품';
+            return cat;
+        }
+
+        function filterCategory(category) {
+            const buttons = document.querySelectorAll('#filter-buttons button');
+            buttons.forEach(btn => {
+                btn.className = "px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 cursor-pointer";
+            });
+            
+            const evt = window.event;
+            if(evt && evt.target && evt.target.tagName === 'BUTTON') {
+                evt.target.className = "px-4 py-2 rounded-full text-sm font-medium bg-blue-600 text-white shadow-xs cursor-pointer";
+            }
+
+            if (category === 'All') {
+                displayProducts(products);
+            } else {
+                const filtered = products.filter(p => p.category === category);
+                displayProducts(filtered);
+            }
+        }
+
+        function copyKakaoId(id) {
+            navigator.clipboard.writeText(id).then(() => {
+                alert("카카오톡 ID가 복사되었습니다! 카톡 친구 추가 창에 붙여넣기 해주세요. (ID: " + id + ")");
+            }).catch(err => {
+                alert("복사에 실패했습니다. 카톡 ID: " + id);
+            });
+        }
+
+        displayProducts(products);
+    </script>
+</body>
+</html>
