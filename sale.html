@@ -6,9 +6,10 @@
     <title>Moving Sale - 짐 정리 물품 판매</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
-        .badge-available { background-color: #DEF7EC; color: #03543F; }
-        .badge-reserved { background-color: #FEF08A; color: #713F12; }
-        .badge-sold { background-color: #FBD5D5; color: #9B1C1C; }
+        /* 배지 색상 스타일 클래스 */
+        .badge-available { background-color: #DEF7EC !important; color: #03543F !important; }
+        .badge-reserved { background-color: #FEF08A !important; color: #713F12 !important; }
+        .badge-sold { background-color: #FBD5D5 !important; color: #9B1C1C !important; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased pb-24 sm:pb-8">
@@ -98,6 +99,7 @@
                        </a>` 
                     : item.store;
 
+                // 🚨 수정 포인트: 고정되어 있던 색상 변수 지우고 ${status.class}가 완벽하게 들어가도록 반영했습니다.
                 card.innerHTML = `
                     <div class="relative bg-gray-100 h-48 flex items-center justify-center overflow-hidden">
                         <img src="${item.photo}" alt="${item.name}" onerror="this.onerror=null; this.src='https://placehold.co/300x200?text=No+Image';" class="object-cover w-full h-full">
