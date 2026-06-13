@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moving Sale - 짐 정리 물품 판매</title>
+    <title>Moving Sale - Items for Sale</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
-        /* 배지 색상 스타일 클래스 */
+        /* Badge Color Styles */
         .badge-available { background-color: #DEF7EC !important; color: #03543F !important; }
         .badge-reserved { background-color: #FEF08A !important; color: #713F12 !important; }
         .badge-sold { background-color: #FBD5D5 !important; color: #9B1C1C !important; }
@@ -17,14 +17,14 @@
     <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-xs">
         <div class="max-w-6xl mx-auto px-4 py-6 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-gray-900">📦 무빙 세일 (Moving Sale)</h1>
-                <p class="text-sm text-gray-500 mt-1">귀국으로 인해 사용하던 물품들을 저렴하게 정리합니다. (가구는 픽업만 가능) 7월 14일까지 모두 픽업 부탁드립니다.</p>
+                <h1 class="text-2xl font-bold text-gray-900">📦 Moving Sale</h1>
+                <p class="text-sm text-gray-500 mt-1">Selling used items at affordable prices due to relocation. (Furniture is pick-up only). Please pick up all items by July 14th.</p>
             </div>
             <div id="filter-buttons" class="flex gap-2 overflow-x-auto pb-2 sm:pb-0 w-full sm:w-auto">
-                <button onclick="filterCategory('All')" class="px-4 py-2 rounded-full text-sm font-medium bg-blue-600 text-white shadow-xs cursor-pointer">전체</button>
-                <button onclick="filterCategory('Furniture')" class="px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 cursor-pointer">가구</button>
-                <button onclick="filterCategory('Electronics')" class="px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 cursor-pointer">가전</button>
-                <button onclick="filterCategory('Home')" class="px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 cursor-pointer">생활용품</button>
+                <button onclick="filterCategory('All')" class="px-4 py-2 rounded-full text-sm font-medium bg-blue-600 text-white shadow-xs cursor-pointer">All</button>
+                <button onclick="filterCategory('Furniture')" class="px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 cursor-pointer">Furniture</button>
+                <button onclick="filterCategory('Electronics')" class="px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 cursor-pointer">Electronics</button>
+                <button onclick="filterCategory('Home')" class="px-4 py-2 rounded-full text-sm font-medium bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 cursor-pointer">Home Supplies</button>
             </div>
         </div>
     </header>
@@ -34,68 +34,67 @@
         </div>
     </main>
 
-    <!-- 📱 하단 고정 연락처 바 -->
     <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-xl z-50 sm:relative sm:shadow-none sm:border-t sm:mt-12 sm:bg-transparent">
         <div class="max-w-md mx-auto flex gap-3 sm:justify-center sm:max-w-none">
             
             <a href="sms:203-507-5172" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-md transition-colors text-sm">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                문자 문의하기
+                Text Seller
             </a>
             
             <button onclick="copyKakaoId('hongbaoluo')" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 bg-amber-400 hover:bg-amber-500 text-amber-950 font-semibold rounded-xl shadow-md transition-colors text-sm cursor-pointer">
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.185-9 7.115 0 2.553 1.706 4.8 4.27 6.054-.189.67-.683 2.427-.781 2.77-.123.424.14.417.294.316.121-.08 1.93-1.314 2.696-1.84a10.4 10.4 0 002.521.31c4.97 0 9-3.185 9-7.115C21 6.185 16.97 3 12 3z"/></svg>
-                카톡 ID 복사
+                Copy Kakao ID
             </button>
             
         </div>
-        <p class="text-center text-xs text-gray-400 mt-2 hidden sm:block">클릭 시 문자 연결 또는 아이디가 복사됩니다.</p>
+        <p class="text-center text-xs text-gray-400 mt-2 hidden sm:block">Click to send a text message or copy the KakaoTalk ID.</p>
     </div>
 
     <script>
         const products = [
-            { id: 1, category: "Furniture", name: "IKEA MICKE 책상 (Small)", price: 20, condition: "Fair", original: "99.99", store: "IKEA", url: "https://www.ikea.com/us/en/p/micke-desk-white-80213074/", photo: "desk1.png", desc: "상판에 약간의 까임이 있습니다. 사이즈 105*50*75cm", status: "Available" },
-            { id: 2, category: "Furniture", name: "IKEA MICKE 책상 (Small)", price: 30, condition: "Good", original: "99.99", store: "IKEA", url: "https://www.ikea.com/us/en/p/micke-desk-white-80213074/", photo: "desk1.png", desc: "사이즈 105*50*75cm", status: "Reserved" },
-            { id: 3, category: "Furniture", name: "IKEA MICKE 책상 (Large)", price: 30, condition: "Good", original: "99.99", store: "IKEA", url: "https://www.ikea.com/us/en/p/micke-desk-black-brown-90214308/", photo: "desk2.png", desc: "사이즈 142*50*75cm", status: "Sold" },
-            { id: 4, category: "Furniture", name: "IKEA MICKE 책상 (Large)", price: 30, condition: "Good", original: "99.99", store: "IKEA", url: "https://www.ikea.com/us/en/p/micke-desk-black-brown-90214308/", photo: "desk2.png", desc: "사이즈 142*50*75cm", status: "Reserved" },
-            { id: 5, category: "Furniture", name: "사무 의자 (Pink)", price: 10, condition: "Good", original: "49.98", store: "Amazon", url: "https://a.co/d/0ecBUte0", photo: "chair_pink.png", desc: "등받이 및 쿠션 모두 핑크입니다.", status: "Reserved" },
-            { id: 6, category: "Furniture", name: "사무 의자 (Grey)", price: 10, condition: "Good", original: "49.98", store: "Amazon", url: "https://a.co/d/03hiXGMU", photo: "chair_grey.png", desc: "등받이 및 쿠션 모두 그레이입니다.", status: "Reserved" },
-            { id: 7, category: "Furniture", name: "사무 의자 (Black)", price: 10, condition: "Good", original: "35.98", store: "Amazon", url: "https://a.co/d/09RZQ9P9", photo: "chair_black.png", desc: "등받이 및 쿠션 모두 블랙입니다", status: "Sold" },
-            { id: 8, category: "Furniture", name: "사무 의자 (Beige)", price: 10, condition: "Good", original: "49.98", store: "Amazon", url: "https://a.co/d/09mtVpuf", photo: "chair_beige.png", desc: "등받이는 그레이이고, 쿠션은 베이지입니다.", status: "Reserved" },
-            { id: 9, category: "Home", name: "따수미 텐트 (Grey)", price: 20, condition: "Good", original: "64,900원", store: "Naver", url: "https://brand.naver.com/idoogen/products/12736364620", photo: "tent.png", desc: "그레이, 슈퍼싱글 사이즈입니다.", status: "Reserved" },
-            { id: 10, category: "Home", name: "빨래 건조대", price: 20, condition: "Excellent", original: "49.99", store: "Amazon", url: "https://www.amazon.com/dp/B09QL1RKTS?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1", photo: "drying.png", desc: "빨래가 꽤 많이 걸리는 빨래 건조대입니다.", status: "Reserved" },
-            { id: 11, category: "Electronics", name: "HP Color LaserJet M182nw", price: 80, condition: "Good", original: "599.15", store: "Amazon", url: "https://a.co/d/03dDvdE3", photo: "printer.png", desc: "블랙 토너가 없고, 다른 색 토너들도 적습니다. 블랙토너를 넣어야 작동합니다.", status: "Available" },
-            { id: 12, category: "Electronics", name: "로봇 청소기", price: 20, condition: "Good", original: "79.99", store: "Amazon", url: "https://a.co/d/02Q2Ce02", photo: "robot.png", desc: "ILIFE 로봇청소기", status: "Available" },
-            { id: 13, category: "Electronics", name: "전기 담요", price: 15, condition: "Good", original: "39.99", store: "Amazon", url: "https://a.co/d/0hOMXvBQ", photo: "blanket.png", desc: "Bedsure 전기담요로 1인 사이즈(50x60인치)입니다.", status: "Reserved" },
-            { id: 14, category: "Electronics", name: "전기 장판 (King)", price: 40, condition: "Fair", original: "92.26", store: "Amazon", url: "https://a.co/d/03dqEQ7q", photo: "heated.png", desc: "화이트, 폴리에스터 탑의 킹사이즈 전기장판입니다.", status: "Available" },
-            { id: 15, category: "Electronics", name: "가습기", price: 10, condition: "Good", original: "25.99", store: "Amazon", url: "https://a.co/d/0bDrjABo", photo: "humidifier.png", desc: "아로마 에센셜 오일(라벤더) 포함하여 드립니다.", status: "Available" },
-            { id: 16, category: "Electronics", name: "케이블 모뎀", price: 50, condition: "Good", original: "246.99", store: "Amazon", url: "https://a.co/d/0dEB3pjk", photo: "modem.png", desc: "Xfinity 1G Plan에 사용한 모뎀입니다.", status: "Available" },
-            { id: 17, category: "Electronics", name: "핸드 믹서", price: 10, condition: "Good", original: "27.95", store: "Amazon", url: "https://a.co/d/0ga48vdE", photo: "mixer.png", desc: "머핀팬 같이 드립니다.", status: "Available" },
-            { id: 18, category: "Electronics", name: "전자렌지", price: 20, condition: "Good", original: "79.95", store: "Walmart", url: "https://www.walmart.com/ip/Midea-0-9-cu-ft-Countertop-Microwave-Oven-900-W-Turntable-Black-EM9P022CV-PMB/12354768190", photo: "micro.png", desc: "Midea 900W 카운터탑 전자레인지입니다.", status: "Available" },
-            { id: 19, category: "Electronics", name: "에어프라이어", price: 20, condition: "Good", original: "89.99", store: "Amazon", url: "https://a.co/d/01g7UtCI", photo: "airfryer.png", desc: "닌자 에어프라이어 간편히 쓰기 좋습니다.", status: "Available" },
-            { id: 20, category: "Electronics", name: "커피머신", price: 30, condition: "Good", original: "128", store: "Amazon", url: "https://a.co/d/00JSnPDL", photo: "coffee.png", desc: "K-cup용 커피머신입니다.", status: "Available" },
-            { id: 21, category: "Electronics", name: "전기밥솥", price: 50, condition: "Good", original: "299.99", store: "Amazon", url: "https://a.co/d/0gpnAdZF", photo: "rice.png", desc: "블랙 쿠쿠 6인용 전기밥솥입니다.", status: "Available" },
-            { id: 22, category: "Electronics", name: "전기 포트", price: 0, condition: "Good", original: "17.04", store: "Amazon", url: "https://a.co/d/0dReCCZU", photo: "kettle.png", desc: "무료 나눔", status: "Available" },
-            { id: 23, category: "Electronics", name: "초퍼", price: 10, condition: "Fair", original: "48.99", store: "Amazon", url: "https://a.co/d/00BwSRM8", photo: "chopper.png", desc: "Ninja chopper 야채다질때 유용합니다.", status: "Reserved" },
-            { id: 24, category: "Electronics", name: "청소기", price: 15, condition: "Fair", original: "58", store: "Walmart", url: "https://www.walmart.com/ip/Dirt-Devil-Multi-Surface-Extended-Reach-Upright-UD76330V/17515951886", photo: "vacuum.png", desc: "Dirt Devil 멀티 서피스 업라이트 청소기입니다.", status: "Available" },
-            { id: 25, category: "Home", name: "전등", price: 5, condition: "Good", original: "21.26", store: "IKEA", url: "", photo: "floorlamp.png", desc: "플로어 스탠드에 리딩 램프가 있어 방에서 쓰기 좋습니다.", status: "Available" },
-            { id: 26, category: "Home", name: "전등", price: 5, condition: "Good", original: "21.26", store: "IKEA", url: "", photo: "floorlamp.png", desc: "플로어 스탠드에 리딩 램프가 있어 방에서 쓰기 좋습니다.", status: "Available" },
-            { id: 27, category: "Home", name: "LED 스탠드", price: 10, condition: "Excellent", original: "21.99", store: "Amazon", url: "https://a.co/d/03w4g4Fc", photo: "lamp.png", desc: "여러 색상과 밝기 조절이 가능한 스탠드입니다.", status: "Reserved" },
-            { id: 28, category: "Home", name: "LED 스탠드", price: 10, condition: "Excellent", original: "21.99", store: "Amazon", url: "https://a.co/d/03w4g4Fc", photo: "lamp.png", desc: "여러 색상과 밝기 조절이 가능한 스탠드입니다.", status: "Available" },
-            { id: 30, category: "Home", name: "어린이용 체조 바", price: 5, condition: "Good", original: "76.99", store: "Amazon", url: "https://www.amazon.com/dp/B07PP22TST?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1", photo: "bar.png", desc: "어린이용 접이식 체조 바입니다.", status: "Reserved" },
-            { id: 31, category: "Home", name: "브리타 물통", price: 5, condition: "Fair", original: "25.99", store: "Amazon", url: "https://a.co/d/0fGKyg4J", photo: "brita.png", desc: "물통만 있고 필터는 별도 구매가 필요합니다.", status: "Available" },
-            { id: 32, category: "Home", name: "화이트보드", price: 0, condition: "Good", original: "19.46", store: "Walmart", url: "https://www.walmart.com/ip/U-Brands-17-x-23-in-Dry-Erase-Whiteboard-Value-Pack-Assorted-Dry-Erase-Markers-Plastic-Frame/354540710", photo: "board.png", desc: "무료 나눔", status: "Available" },
-            { id: 33, category: "Home", name: "쓰레기통", price: 5, condition: "Good", original: "44.99", store: "IKEA", url: "https://www.ikea.com/us/en/p/knoeckla-step-trash-can-dark-gray-70514100/", photo: "trash.png", desc: "이케아 플라스틱 쓰레기통입니다.", status: "Available" },
-            { id: 34, category: "Furniture", name: "킹 매트리스", price: 0, condition: "Good", original: "304.96", store: "Amazon", url: "https://a.co/d/0dL4KLZJ", photo: "king.png", desc: "Zinus 높이 12인치 하이브리드 킹 매트리스와 방수커버입니다.", status: "Reserved" },
-            { id: 35, category: "Furniture", name: "풀 매트리스", price: 0, condition: "Good", original: "249.99", store: "Amazon", url: "https://a.co/d/00sD6RGC", photo: "full1.png", desc: "Zinus 높이 12인치 하이브리드 풀 매트리스와 방수커버입니다.", status: "Available" },
-            { id: 36, category: "Furniture", name: "풀 매트리스 + 프레임", price: 0, condition: "Good", original: "249.99", store: "Amazon", url: "https://a.co/d/00sD6RGC", photo: "full1.png", desc: "Zinus 높이 12인치 하이브리드 풀 매트리스입니다.", status: "Available" },
-            { id: 37, category: "Home", name: "Yale SOM 졸업가운", price: 10, condition: "Good", original: "68", store: "Yale", url: "", photo: "regalia.png", desc: "Yale SOM 마스터 졸업가운으로 5'3'' to 5'5'' 여성사이즈입니다. 가운, 후드, 모자로 구성되어 있습니다.", status: "Available" }    
+            { id: 1, category: "Furniture", name: "IKEA MICKE Desk (Small)", price: 20, condition: "Fair", original: "99.99", store: "IKEA", url: "https://www.ikea.com/us/en/p/micke-desk-white-80213074/", photo: "desk1.png", desc: "Minor scratches on the desktop surface. Dimensions: 105*50*75cm", status: "Available" },
+            { id: 2, category: "Furniture", name: "IKEA MICKE Desk (Small)", price: 30, condition: "Good", original: "99.99", store: "IKEA", url: "https://www.ikea.com/us/en/p/micke-desk-white-80213074/", photo: "desk1.png", desc: "Dimensions: 105*50*75cm", status: "Reserved" },
+            { id: 3, category: "Furniture", name: "IKEA MICKE Desk (Large)", price: 30, condition: "Good", original: "99.99", store: "IKEA", url: "https://www.ikea.com/us/en/p/micke-desk-black-brown-90214308/", photo: "desk2.png", desc: "Dimensions: 142*50*75cm", status: "Sold" },
+            { id: 4, category: "Furniture", name: "IKEA MICKE Desk (Large)", price: 30, condition: "Good", original: "99.99", store: "IKEA", url: "https://www.ikea.com/us/en/p/micke-desk-black-brown-90214308/", photo: "desk2.png", desc: "Dimensions: 142*50*75cm", status: "Reserved" },
+            { id: 5, category: "Furniture", name: "Office Chair (Pink)", price: 10, condition: "Good", original: "49.98", store: "Amazon", url: "https://a.co/d/0ecBUte0", photo: "chair_pink.png", desc: "Both backrest and seat cushion are pink.", status: "Reserved" },
+            { id: 6, category: "Furniture", name: "Office Chair (Grey)", price: 10, condition: "Good", original: "49.98", store: "Amazon", url: "https://a.co/d/03hiXGMU", photo: "chair_grey.png", desc: "Both backrest and seat cushion are grey.", status: "Reserved" },
+            { id: 7, category: "Furniture", name: "Office Chair (Black)", price: 10, condition: "Good", original: "35.98", store: "Amazon", url: "https://a.co/d/09RZQ9P9", photo: "chair_black.png", desc: "Both backrest and seat cushion are black.", status: "Sold" },
+            { id: 8, category: "Furniture", name: "Office Chair (Beige)", price: 10, condition: "Good", original: "49.98", store: "Amazon", url: "https://a.co/d/09mtVpuf", photo: "chair_beige.png", desc: "Grey backrest with a beige seat cushion.", status: "Reserved" },
+            { id: 9, category: "Home", name: "Ddhasumi Bed Tent (Grey)", price: 20, condition: "Good", original: "50.00", store: "Naver", url: "https://brand.naver.com/idoogen/products/12736364620", photo: "tent.png", desc: "Grey color, Twin/Super Single size indoor bed canopy tent.", status: "Reserved" },
+            { id: 10, category: "Home", name: "Clothes Drying Rack", price: 20, condition: "Excellent", original: "49.99", store: "Amazon", url: "https://www.amazon.com/dp/B09QL1RKTS?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1", photo: "drying.png", desc: "Large capacity laundry drying rack, holds a lot of clothes.", status: "Reserved" },
+            { id: 11, category: "Electronics", name: "HP Color LaserJet M182nw", price: 80, condition: "Good", original: "599.15", store: "Amazon", url: "https://a.co/d/03dDvdE3", photo: "printer.png", desc: "Out of black toner; other color toners are low. Requires a new black toner cartridge to operate.", status: "Available" },
+            { id: 12, category: "Electronics", name: "Robot Vacuum Cleaner", price: 20, condition: "Good", original: "79.99", store: "Amazon", url: "https://a.co/d/02Q2Ce02", photo: "robot.png", desc: "ILIFE Robot Vacuum Cleaner.", status: "Available" },
+            { id: 13, category: "Electronics", name: "Electric Blanket", price: 15, condition: "Good", original: "39.99", store: "Amazon", url: "https://a.co/d/0hOMXvBQ", photo: "blanket.png", desc: "Bedsure Electric Blanket Throw Size (50x60 inches).", status: "Reserved" },
+            { id: 14, category: "Electronics", name: "Electric Mattress Pad (King)", price: 40, condition: "Fair", original: "92.26", store: "Amazon", url: "https://a.co/d/03dqEQ7q", photo: "heated.png", desc: "White, polyester top heated mattress pad, King size.", status: "Available" },
+            { id: 15, category: "Electronics", name: "Humidifier", price: 10, condition: "Good", original: "25.99", store: "Amazon", url: "https://a.co/d/0bDrjABo", photo: "humidifier.png", desc: "Comes with Lavender Aroma Essential Oil.", status: "Available" },
+            { id: 16, category: "Electronics", name: "Cable Modem", price: 50, condition: "Good", original: "246.99", store: "Amazon", url: "https://a.co/d/0dEB3pjk", photo: "modem.png", desc: "Modem previously used with Xfinity 1G Plan.", status: "Available" },
+            { id: 17, category: "Electronics", name: "Hand Mixer", price: 10, condition: "Good", original: "27.95", store: "Amazon", url: "https://a.co/d/0ga48vdE", photo: "mixer.png", desc: "Includes a free muffin pan.", status: "Available" },
+            { id: 18, category: "Electronics", name: "Microwave Oven", price: 20, condition: "Good", original: "79.95", store: "Walmart", url: "https://www.walmart.com/ip/Midea-0-9-cu-ft-Countertop-Microwave-Oven-900-W-Turntable-Black-EM9P022CV-PMB/12354768190", photo: "micro.png", desc: "Midea 900W Countertop Microwave Oven.", status: "Available" },
+            { id: 19, category: "Electronics", name: "Air Fryer", price: 20, condition: "Good", original: "89.99", store: "Amazon", url: "https://a.co/d/01g7UtCI", photo: "airfryer.png", desc: "Ninja Air Fryer, very convenient and easy to use.", status: "Available" },
+            { id: 20, category: "Electronics", name: "Coffee Maker", price: 30, condition: "Good", original: "128", store: "Amazon", url: "https://a.co/d/00JSnPDL", photo: "coffee.png", desc: "Keurig K-Cup pod coffee maker.", status: "Available" },
+            { id: 21, category: "Electronics", name: "Electric Rice Cooker", price: 50, condition: "Good", original: "299.99", store: "Amazon", url: "https://a.co/d/0gpnAdZF", photo: "rice.png", desc: "Black Cuckoo 6-Cup Electric Rice Cooker.", status: "Available" },
+            { id: 22, category: "Electronics", name: "Electric Kettle", price: 0, condition: "Good", original: "17.04", store: "Amazon", url: "https://a.co/d/0dReCCZU", photo: "kettle.png", desc: "FREE", status: "Available" },
+            { id: 23, category: "Electronics", name: "Food Chopper", price: 10, condition: "Fair", original: "48.99", store: "Amazon", url: "https://a.co/d/00BwSRM8", photo: "chopper.png", desc: "Ninja chopper, very useful for chopping vegetables.", status: "Reserved" },
+            { id: 24, category: "Electronics", name: "Vacuum Cleaner", price: 15, condition: "Fair", original: "58", store: "Walmart", url: "https://www.walmart.com/ip/Dirt-Devil-Multi-Surface-Extended-Reach-Upright-UD76330V/17515951886", photo: "vacuum.png", desc: "Dirt Devil Multi-Surface Extended Reach Upright Vacuum.", status: "Available" },
+            { id: 25, category: "Home", name: "Floor Lamp", price: 5, condition: "Good", original: "21.26", store: "IKEA", url: "", photo: "floorlamp.png", desc: "Floor lamp with an attached reading light, great for bedrooms.", status: "Available" },
+            { id: 26, category: "Home", name: "Floor Lamp", price: 5, condition: "Good", original: "21.26", store: "IKEA", url: "", photo: "floorlamp.png", desc: "Floor lamp with an attached reading light, great for bedrooms.", status: "Available" },
+            { id: 27, category: "Home", name: "LED Desk Lamp", price: 10, condition: "Excellent", original: "21.99", store: "Amazon", url: "https://a.co/d/03w4g4Fc", photo: "lamp.png", desc: "Desk lamp with adjustable brightness levels and multiple color modes.", status: "Reserved" },
+            { id: 28, category: "Home", name: "LED Desk Lamp", price: 10, condition: "Excellent", original: "21.99", store: "Amazon", url: "https://a.co/d/03w4g4Fc", photo: "lamp.png", desc: "Desk lamp with adjustable brightness levels and multiple color modes.", status: "Available" },
+            { id: 30, category: "Home", name: "Kids Gymnastics Bar", price: 5, condition: "Good", original: "76.99", store: "Amazon", url: "https://www.amazon.com/dp/B07PP22TST?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1", photo: "bar.png", desc: "Foldable gymnastics bar for kids.", status: "Reserved" },
+            { id: 31, category: "Home", name: "Brita Water Pitcher", price: 5, condition: "Fair", original: "25.99", store: "Amazon", url: "https://a.co/d/0fGKyg4J", photo: "brita.png", desc: "Pitcher only; filters need to be purchased separately.", status: "Available" },
+            { id: 32, category: "Home", name: "Whiteboard", price: 0, condition: "Good", original: "19.46", store: "Walmart", url: "https://www.walmart.com/ip/U-Brands-17-x-23-in-Dry-Erase-Whiteboard-Value-Pack-Assorted-Dry-Erase-Markers-Plastic-Frame/354540710", photo: "board.png", desc: "FREE", status: "Available" },
+            { id: 33, category: "Home", name: "Trash Can", price: 5, condition: "Good", original: "44.99", store: "IKEA", url: "https://www.ikea.com/us/en/p/knoeckla-step-trash-can-dark-gray-70514100/", photo: "trash.png", desc: "IKEA plastic step trash can.", status: "Available" },
+            { id: 34, category: "Furniture", name: "King Mattress", price: 0, condition: "Good", original: "304.96", store: "Amazon", url: "https://a.co/d/0dL4KLZJ", photo: "king.png", desc: "Zinus 12-inch Hybrid King Mattress. Comes with a waterproof cover.", status: "Reserved" },
+            { id: 35, category: "Furniture", name: "Full Mattress", price: 0, condition: "Good", original: "249.99", store: "Amazon", url: "https://a.co/d/00sD6RGC", photo: "full1.png", desc: "Zinus 12-inch Hybrid Full Mattress. Comes with a waterproof cover.", status: "Available" },
+            { id: 36, category: "Furniture", name: "Full Mattress + Frame", price: 0, condition: "Good", original: "249.99", store: "Amazon", url: "https://a.co/d/00sD6RGC", photo: "full1.png", desc: "Zinus 12-inch Hybrid Full Mattress with bed frame.", status: "Available" },
+            { id: 37, category: "Home", name: "Yale SOM Graduation Regalia", price: 10, condition: "Good", original: "68", store: "Yale", url: "", photo: "regalia.png", desc: "Yale SOM Master's graduation regalia. Women's size for height 5'3'' to 5'5''. Includes gown, hood, and cap.", status: "Available" }    
         ];
 
         const statusConfig = {
-            'Available': { text: '판매중', class: 'badge-available' },
-            'Reserved': { text: '예약중', class: 'badge-reserved' },
-            'Sold': { text: '판매완료', class: 'badge-sold' }
+            'Available': { text: 'Available', class: 'badge-available' },
+            'Reserved': { text: 'Reserved', class: 'badge-reserved' },
+            'Sold': { text: 'Sold', class: 'badge-sold' }
         };
 
         function displayProducts(items) {
@@ -103,16 +102,15 @@
             grid.innerHTML = '';
 
             if(items.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-center text-gray-500 py-12">해당 품목이 없습니다.</p>`;
+                grid.innerHTML = `<p class="col-span-full text-center text-gray-500 py-12">No items found in this category.</p>`;
                 return;
             }
 
             items.forEach(item => {
                 const status = statusConfig[item.status] || { text: item.status, class: 'bg-gray-100 text-gray-800' };
                 
-                // 🛠️ 변경 포인트 1: 개별 카드들을 균일하게 고정된 세로 길이로 정렬되도록 grid 구조 설정
                 const card = document.createElement('div');
-                card.className = "bg-white rounded-xl shadow-xs border border-gray-100 overflow-hidden flex flex-col h-[460px]"; // 전체 카드 높이 고정
+                card.className = "bg-white rounded-xl shadow-xs border border-gray-100 overflow-hidden flex flex-col h-[460px]"; 
                 
                 if(item.status === 'Sold') card.classList.add('opacity-60');
 
@@ -123,11 +121,9 @@
                     : item.store;
 
                 const priceHTML = item.price === 0 
-                    ? `<span class="text-xl font-extrabold text-green-600">FREE (무료)</span>`
+                    ? `<span class="text-xl font-extrabold text-green-600">FREE</span>`
                     : `<span class="text-xl font-extrabold text-gray-900">$${item.price}</span>`;
 
-                // 🛠️ 변경 포인트 2: 이미지 회색 틀 영역을 h-52(약 208px)로 상시 통일!
-                // 이미지는 잘림 없이(object-contain) 원본 비율을 유지한 채 액자 정중앙에 배치됩니다.
                 card.innerHTML = `
                     <div class="relative bg-gray-50 h-52 p-3 flex items-center justify-center overflow-hidden border-b border-gray-100 shrink-0">
                         <img src="${item.photo}" alt="${item.name}" onerror="this.onerror=null; this.src='https://placehold.co/300x200?text=No+Image';" class="max-w-full max-h-full object-contain rounded-lg">
@@ -139,8 +135,8 @@
                         <div class="overflow-hidden">
                             <span class="text-xs font-bold text-blue-600 uppercase tracking-wide">${translateCategory(item.category)}</span>
                             <h3 class="text-base font-bold text-gray-900 mt-1 line-clamp-2">${item.name}</h3>
-                            <p class="text-xs text-gray-400 mt-1">상태: <span class="font-medium text-gray-600">${item.condition}</span> | 구매처: ${storeLinkHTML}</p>
-                            <p class="text-sm text-gray-500 mt-2 line-clamp-3">${item.desc || '설명 없음'}</p>
+                            <p class="text-xs text-gray-400 mt-1">Condition: <span class="font-medium text-gray-600">${item.condition}</span> | Bought from: ${storeLinkHTML}</p>
+                            <p class="text-sm text-gray-500 mt-2 line-clamp-3">${item.desc || 'No description available.'}</p>
                         </div>
                         <div class="mt-4 pt-3 border-t border-gray-100 flex items-baseline justify-between shrink-0">
                             <div>
@@ -155,9 +151,9 @@
         }
 
         function translateCategory(cat) {
-            if(cat === 'Furniture') return '가구';
-            if(cat === 'Electronics') return '가전';
-            if(cat === 'Home') return '생활용품';
+            if(cat === 'Furniture') return 'Furniture';
+            if(cat === 'Electronics') return 'Electronics';
+            if(cat === 'Home') return 'Home Supplies';
             return cat;
         }
 
@@ -182,9 +178,9 @@
 
         function copyKakaoId(id) {
             navigator.clipboard.writeText(id).then(() => {
-                alert("카카오톡 ID가 복사되었습니다! 카톡 친구 추가 창에 붙여넣기 해주세요. (ID: " + id + ")");
+                alert("KakaoTalk ID has been copied! Please paste it into the Add Friends search bar in KakaoTalk. (ID: " + id + ")");
             }).catch(err => {
-                alert("복사에 실패했습니다. 카톡 ID: " + id);
+                alert("Failed to copy. KakaoTalk ID: " + id);
             });
         }
 
